@@ -6,7 +6,7 @@ const typeDefs = `
     type Mutation {
         login(email: String!, password: String!): Auth
         addUser(username: String!, email: String!, password: String!): Auth
-        saveBook():User
+        saveBook(input: Book!):User
         removeBook(bookId: String!): User
     }
 
@@ -32,4 +32,6 @@ const typeDefs = `
         token: ID!
         user: USer
     }
-`
+`;
+
+module.exports = typeDefs;

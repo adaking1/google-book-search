@@ -1,6 +1,6 @@
 import './App.css';
 import { Outlet } from 'react-router-dom';
-import { ApolloClient, ApolloProvidor, InMemoryCache } from '@apollo/client';
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import Navbar from './components/Navbar';
 
 const client = new ApolloClient({
@@ -10,10 +10,10 @@ const client = new ApolloClient({
 
 function App() {
   return (
-    <ApolloProvidor client={client}>
+    <ApolloProvider client={client}>
       <Navbar />
       <Outlet />
-    </ApolloProvidor>
+    </ApolloProvider>
   )
 }
 

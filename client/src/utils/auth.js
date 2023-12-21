@@ -6,7 +6,7 @@ class AuthService {
     }
     loggedIn() {
         const token = this.getToken();
-        return token && !this.isTokenExpired(token) ? true : false;
+        return !!token && !this.isTokenExpired(token) ? true : false;
     }
     isTokenExpired(token) {
         const decoded = decode(token);
@@ -25,6 +25,7 @@ class AuthService {
     }
     logout() {
         localStorage.removeItem('id_token');
+        localStorage.removeItem('saved_books');
         window.location.assign('/');
     }
 }

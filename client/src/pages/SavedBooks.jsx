@@ -15,8 +15,6 @@ const SavedBooks = () => {
     const { loading, data } = useQuery(GET_ME);
     const [deleteBook, { error }] = useMutation(REMOVE_BOOK);
     const userData = data?.me || {};
-    console.log(loading);
-    console.log(userData);
     
     
     // const userDataLength = Object.keys(userData).length;
@@ -30,6 +28,7 @@ const SavedBooks = () => {
               variables: { bookId }
             });
             removeBookId(bookId);
+            window.location.reload();
         }
         catch (err) {
             console.error(err);
@@ -49,15 +48,15 @@ const SavedBooks = () => {
           </div>
           <Container>
             <h2 className='pt-5'>
-              {userData.savedBooks
+              {userData.savedBooks.length
                 ? `Viewing ${userData.savedBooks.length} saved ${userData.savedBooks.length === 1 ? 'book' : 'books'}:`
                 : 'You have no saved books!'}
             </h2>
             <Row>
-              {userData.savedBooks?.map((book) => {
+              {userData.savedBooks.map((book) => {
                 return (
-                  <Col md="4">
-                    <Card key={book.bookId} border='dark'>
+                  <Col key={book.bookId} md="4">
+                    <Card  border='dark'>
                       {book.image ? <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' /> : null}
                       <Card.Body>
                         <Card.Title>{book.title}</Card.Title>

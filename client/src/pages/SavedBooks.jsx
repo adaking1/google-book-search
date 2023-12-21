@@ -13,16 +13,22 @@ import { REMOVE_BOOK } from "../utils/mutations";
 
 const SavedBooks = () => {
     const { loading, data } = useQuery(GET_ME);
-    const userData = data?.me || {};
-
     const [deleteBook, { error }] = useMutation(REMOVE_BOOK);
+    const userData = data?.me || {};
+    console.log(loading);
+    console.log(userData);
+    
+    
+    // const userDataLength = Object.keys(userData).length;
     const handleDeleteBook = async (bookId) => {
-        const token = Auth.loggenIn() ? Auth.getToken() : null;
+        const token = Auth.loggedIn() ? Auth.getToken() : null;
         if (!token) {
             return false;
         }
         try {
-            await deleteBook(bookId);
+            const { data } = await deleteBook({
+              variables: { bookId }
+            });
             removeBookId(bookId);
         }
         catch (err) {
@@ -30,25 +36,25 @@ const SavedBooks = () => {
         }
     };
 
-    if (!userDataLength) {
+    if (loading) {
         return <h2>LOADING...</h2>;
     }
 
     return (
         <>
-          <div fluid className="text-light bg-dark p-5">
+          <div fluid="true" className="text-light bg-dark p-5">
             <Container>
               <h1>Viewing saved books!</h1>
             </Container>
           </div>
           <Container>
             <h2 className='pt-5'>
-              {userData.savedBooks.length
+              {userData.savedBooks
                 ? `Viewing ${userData.savedBooks.length} saved ${userData.savedBooks.length === 1 ? 'book' : 'books'}:`
                 : 'You have no saved books!'}
             </h2>
             <Row>
-              {userData.savedBooks.map((book) => {
+              {userData.savedBooks?.map((book) => {
                 return (
                   <Col md="4">
                     <Card key={book.bookId} border='dark'>

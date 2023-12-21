@@ -3,10 +3,13 @@ const { signToken, AuthenticationError } = require('../utils/auth');
 
 const resolvers = {
     Query: {
-        me: async (parent, { username, _id }) => {
-            return User.findOne({
-                $or: [{_id},{username}]
-            })
+        me: async (parent, args, context) => {
+            if (context.user) {
+                const user = await User.findOne({_id: context.user._id});
+                console.log(user);
+                return user;
+            }
+            throw AuthenticationError('You need to be logged in!');
         }
     },
     Mutation: {
@@ -30,11 +33,12 @@ const resolvers = {
         },
         saveBook: async (parent, { input }, context) => {
             if (context.user) {
-                return User.findOneAndUpdate(
+                const user = await User.findOneAndUpdate(
                     { _id: context.user._id },
-                    { $addToSet: { savedBooks: { input } } },
+                    { $addToSet: { savedBooks: { ...input } } },
                     { new: true, runValidators: true }
                 );
+                return user;
             }
             throw AuthenticationError;
         },

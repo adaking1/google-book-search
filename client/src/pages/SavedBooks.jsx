@@ -15,7 +15,12 @@ const SavedBooks = () => {
     const { loading, data } = useQuery(GET_ME);
     const [deleteBook, { error }] = useMutation(REMOVE_BOOK);
     const userData = data?.me || {};
-    
+    // localStorage.setItem('saved_books', userData.savedBooks);
+    if (userData.savedBooks) {
+      const bookIds = [];
+      userData.savedBooks.map((book) => bookIds.push(book.bookId))
+      localStorage.setItem('saved_books', JSON.stringify(bookIds));
+    }
     
     // const userDataLength = Object.keys(userData).length;
     const handleDeleteBook = async (bookId) => {
@@ -28,6 +33,7 @@ const SavedBooks = () => {
               variables: { bookId }
             });
             removeBookId(bookId);
+            (localStorage.setItem('saved_books', bookId));
             window.location.reload();
         }
         catch (err) {

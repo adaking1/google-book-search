@@ -15,7 +15,6 @@ const SavedBooks = () => {
     const { loading, data } = useQuery(GET_ME);
     const [deleteBook, { error }] = useMutation(REMOVE_BOOK);
     const userData = data?.me || {};
-    // localStorage.setItem('saved_books', userData.savedBooks);
     if (userData.savedBooks) {
       const bookIds = [];
       userData.savedBooks.map((book) => bookIds.push(book.bookId))

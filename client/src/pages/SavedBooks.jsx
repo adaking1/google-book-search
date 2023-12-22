@@ -33,7 +33,7 @@ const SavedBooks = () => {
             });
             removeBookId(bookId);
             (localStorage.setItem('saved_books', bookId));
-            window.location.reload();
+            // window.location.reload();
         }
         catch (err) {
             console.error(err);
